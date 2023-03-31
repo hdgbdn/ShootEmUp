@@ -57,12 +57,15 @@ namespace ShotEmUp
             return null;
         }
 
-        private void Start()
+        public static BulletManager Bullet
         {
-            
+            get; private set;
         }
-        
 
+        private static void InitManagers()
+        {
+            Bullet = GetManager<BulletManager>();
+        }
     }
 }
 
