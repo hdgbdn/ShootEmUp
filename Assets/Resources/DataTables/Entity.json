@@ -1,0 +1,18 @@
+[
+{
+  "id": 1000,
+  "remark": "PlayerShip",
+  "resource": "PlayerShip"
+},
+{
+  "id": 1001,
+  "remark": "EnemyShip",
+  "resource": "PlayerShip"
+},
+{
+  "id": 5001,
+  "remark": "The long bullet",
+  "resource": "LongBullet"
+},
+]
+
