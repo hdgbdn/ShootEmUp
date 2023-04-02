@@ -17,7 +17,7 @@ namespace ShotEmUp
         protected float m_fireRate;
         public LinearBulletLauncher(Aircraft craft) : base(craft) 
         {
-            m_fireRate = 0.2f;
+            m_fireRate = 0.3f;
         }
 
         public override void TryFire()
@@ -36,7 +36,11 @@ namespace ShotEmUp
             GameObject bulletPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/BoltBullet.prefab");
             GameObject go = GameObject.Instantiate(bulletPrefab);
             BoltBullet bullet = go.GetComponent<BoltBullet>();
-            bullet.Init(m_craft.transform.position, m_craft.transform.position + m_frontDirection * 20, 0.3f);
+            bullet.Init(m_craft.transform.position, m_craft.transform.position + m_frontDirection * 20, 0.1f);
+            bullet.tag = "PlayerBullet";
+
+            // Just for test: all the bullet will tagged as player's bullet
+
             m_lastfireTime = curTime;
         }
     }

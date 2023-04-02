@@ -6,13 +6,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace ShotEmUp
 {
-    public class GameEntry : MonoBehaviour
+    public class GameManager : MonoBehaviour
     {
         private static readonly LinkedList<Manager> s_Managets = new LinkedList<Manager>();
+
+        private void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+
+        private void Start()
+        {
+            DontDestroyOnLoad(gameObject);
+            InitManagers();
+        }
 
         public static void RegisterManager(Manager manager)
         {
@@ -62,9 +74,27 @@ namespace ShotEmUp
             get; private set;
         }
 
+        public static UIManager UI
+        {
+            get; private set;
+        }
+
+        public static GameStateManager GameState
+        {
+            get; private set;
+        }
+
+        public static ResourceManager Resource
+        {
+            get; private set;
+        }
+
         private static void InitManagers()
         {
             Bullet = GetManager<BulletManager>();
+            UI = GetManager<UIManager>();
+            GameState = GetManager<GameStateManager>();
+            Resource = GetManager<ResourceManager>();
         }
     }
 }

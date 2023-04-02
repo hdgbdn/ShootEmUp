@@ -23,6 +23,11 @@ public class Bullet : MonoBehaviour
         
     }
 
+    protected virtual void OnTriggerEnter(Collider other)
+    {
+
+    }
+
     protected virtual void DestorySelf()
     {
         GameObject.Destroy(gameObject);

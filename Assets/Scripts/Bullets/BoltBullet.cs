@@ -23,6 +23,21 @@ public class BoltBullet : Bullet
         base.Start();
     }
 
+    protected override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+        if (gameObject.tag == "PlayerBullet" && other.tag == "Attackable") 
+        {
+            DestorySelf();
+            return;
+        }
+        if (gameObject.tag == "EnemyBullet" && other.tag == "Player")
+        {
+            DestorySelf();
+            return;
+        }
+    }
+
     protected override void Update()
     {
         base.Update();
