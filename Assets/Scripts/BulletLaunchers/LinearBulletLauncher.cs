@@ -15,12 +15,15 @@ namespace ShotEmUp
     {
 
         protected float m_fireRate;
+
+        private BulletManager m_bulletManager;
         public LinearBulletLauncher(Aircraft craft) : base(craft) 
         {
             m_fireRate = 0.3f;
+            m_bulletManager = GameManager.GetManager<BulletManager>();
         }
 
-        public override void TryFire()
+        public async override void TryFire()
         {
 
             float curTime = Time.time;
@@ -30,15 +33,14 @@ namespace ShotEmUp
                 return;
             }
             base.TryFire();
-            // TODO: use entity creation here
-            // now using AssetDatabase, it's an Editor only tool!
+
             // now using boltbullet
-            GameObject bulletPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/BoltBullet.prefab");
+            GameObject bulletPrefab =  await m_bulletManager.AcquireBullet<BoltBullet>();
             GameObject go = GameObject.Instantiate(bulletPrefab);
             BoltBullet bullet = go.GetComponent<BoltBullet>();
             bullet.Init(m_craft.transform.position, m_craft.transform.position + m_frontDirection * 20, 0.1f);
             bullet.tag = "PlayerBullet";
-
+            
             // Just for test: all the bullet will tagged as player's bullet
 
             m_lastfireTime = curTime;
