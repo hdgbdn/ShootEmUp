@@ -11,6 +11,9 @@ using UnityEngine;
 
 namespace ShotEmUp
 {
+    /// <summary>
+    /// A bullet launcher that launche bullet in a line.
+    /// </summary>
     public class LinearBulletLauncher : BulletLauncher
     {
 
@@ -23,6 +26,9 @@ namespace ShotEmUp
             m_bulletManager = GameManager.GetManager<BulletManager>();
         }
 
+        /// <summary>
+        /// Try to launch bullets, make it moves in a line.
+        /// </summary>
         public async override void TryFire()
         {
 
@@ -35,14 +41,17 @@ namespace ShotEmUp
             base.TryFire();
 
             // now using boltbullet
-            GameObject bulletPrefab =  await m_bulletManager.AcquireBullet<BoltBullet>();
-            GameObject go = GameObject.Instantiate(bulletPrefab);
+            GameObject go = await m_bulletManager.AcquireBullet<BoltBullet>();
+            if(go == null)
+            {
+                Debug.LogError(string.Format("Failed to acquire a {0} from the BulletManager", typeof(BoltBullet).Name));
+                return;
+            }
             BoltBullet bullet = go.GetComponent<BoltBullet>();
             bullet.Init(m_craft.transform.position, m_craft.transform.position + m_frontDirection * 20, 0.1f);
-            bullet.tag = "PlayerBullet";
-            
-            // Just for test: all the bullet will tagged as player's bullet
 
+            // Just for test: all the bullet will tagged as player's bullet
+            bullet.tag = "PlayerBullet";
             m_lastfireTime = curTime;
         }
     }
