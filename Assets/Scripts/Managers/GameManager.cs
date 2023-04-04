@@ -11,6 +11,10 @@ using UnityEngine;
 
 namespace ShotEmUp
 {
+    /// <summary>
+    /// All the manager instance are keep here.
+    /// Using a LinkedList to achieve sigleton.
+    /// </summary>
     public class GameManager : MonoBehaviour
     {
         private static readonly LinkedList<Manager> s_Managets = new LinkedList<Manager>();

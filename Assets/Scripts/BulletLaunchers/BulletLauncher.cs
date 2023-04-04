@@ -21,6 +21,7 @@ namespace ShotEmUp
         protected Vector3 m_frontDirection;
         protected Vector3 m_rightDirection;
         protected float m_lastfireTime;
+        protected BulletManager m_bulletManager;
 
         public BulletLauncher(Aircraft craft)
         {
@@ -28,10 +29,18 @@ namespace ShotEmUp
             m_frontDirection = craft.transform.up;
             m_rightDirection = craft.transform.right;
             m_lastfireTime = 0.0f;
+            m_bulletManager = GameManager.GetManager<BulletManager>();
         }
         public virtual void TryFire()
         {
 
+        }
+
+
+        public virtual void HideBullet(Bullet bullet)
+        {
+            bullet.gameObject.SetActive(false);
+            m_bulletManager.OnHideBullet(bullet);
         }
     }
 }

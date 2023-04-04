@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace ShotEmUp
 {
@@ -19,11 +20,9 @@ namespace ShotEmUp
 
         protected float m_fireRate;
 
-        private BulletManager m_bulletManager;
         public LinearBulletLauncher(Aircraft craft) : base(craft) 
         {
             m_fireRate = 0.3f;
-            m_bulletManager = GameManager.GetManager<BulletManager>();
         }
 
         /// <summary>
@@ -40,20 +39,21 @@ namespace ShotEmUp
             }
             base.TryFire();
 
-            // now using boltbullet
-            GameObject go = await m_bulletManager.AcquireBullet<BoltBullet>();
-            if(go == null)
+            // Now using boltbullet
+            Bullet bullet = await m_bulletManager.AcquireBullet<BoltBullet>();
+            BoltBullet boltBullet =  bullet as BoltBullet;
+            if (boltBullet.gameObject == null)
             {
                 Debug.LogError(string.Format("Failed to acquire a {0} from the BulletManager", typeof(BoltBullet).Name));
                 return;
             }
-            BoltBullet bullet = go.GetComponent<BoltBullet>();
-            bullet.Init(m_craft.transform.position, m_craft.transform.position + m_frontDirection * 20, 0.1f);
+            boltBullet.Init(m_craft.transform.position, m_craft.transform.position + m_frontDirection * 20, 0.1f, this);
 
             // Just for test: all the bullet will tagged as player's bullet
             bullet.tag = "PlayerBullet";
             m_lastfireTime = curTime;
         }
+
     }
 }
 

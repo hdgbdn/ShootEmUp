@@ -7,46 +7,51 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoltBullet : Bullet
+
+namespace ShotEmUp
 {
-    protected float m_speed;
-    protected float m_length;
+    public class BoltBullet : Bullet
+    {
+        protected float m_speed;
+        protected float m_length;
 
-    public virtual void Init(Vector3 startPos, Vector3 endPos, float speed)
-    {
-        base.Init(startPos, endPos);
-        m_speed = speed;
-        m_length = (m_endPosition - m_startPosition).magnitude;
-    }
-    protected override void Start()
-    {
-        base.Start();
-    }
-
-    protected override void OnTriggerEnter(Collider other)
-    {
-        base.OnTriggerEnter(other);
-        if (gameObject.tag == "PlayerBullet" && other.tag == "Attackable") 
+        public virtual void Init(Vector3 startPos, Vector3 endPos, float speed, BulletLauncher launcher)
         {
-            DestorySelf();
-            return;
+            base.Init(startPos, endPos, launcher);
+            m_speed = speed;
+            m_length = (m_endPosition - m_startPosition).magnitude;
         }
-        if (gameObject.tag == "EnemyBullet" && other.tag == "Player")
+        protected override void Start()
         {
-            DestorySelf();
-            return;
+            base.Start();
         }
-    }
 
-    protected override void Update()
-    {
-        base.Update();
-        Vector3 direction = (m_endPosition - m_startPosition).normalized;
-        Vector3 targetPosition = transform.position + direction * m_speed;
-        transform.position = targetPosition;
-        if((targetPosition - m_startPosition).magnitude > m_length)
+        protected override void OnTriggerEnter(Collider other)
         {
-            DestorySelf();
+            base.OnTriggerEnter(other);
+            if (gameObject.tag == "PlayerBullet" && other.tag == "Attackable")
+            {
+                HideSelf();
+                return;
+            }
+            if (gameObject.tag == "EnemyBullet" && other.tag == "Player")
+            {
+                HideSelf();
+                return;
+            }
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+            Vector3 direction = (m_endPosition - m_startPosition).normalized;
+            Vector3 targetPosition = transform.position + direction * m_speed;
+            transform.position = targetPosition;
+            if ((targetPosition - m_startPosition).magnitude > m_length)
+            {
+                HideSelf();
+            }
         }
     }
 }
+
