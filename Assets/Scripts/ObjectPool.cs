@@ -5,8 +5,8 @@
 //------------------------------------------------------------
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ShotEmUp
 {
@@ -23,7 +23,7 @@ namespace ShotEmUp
         int m_initialSize = 10;
         float m_MaxActiveTime;
 
-        public ObjectPool(GameObject prefab, float maxAcitveTime = 10.0f)
+        public ObjectPool(GameObject prefab, float maxAcitveTime = 5.0f)
         {
             if(prefab.GetComponent<MonoBehaviour>() == null)
             {
@@ -41,6 +41,7 @@ namespace ShotEmUp
                 m_inactivedObjectList.AddLast(instance);
                 m_inactivedTimeDic.Add(instance, Time.time);
             }
+            SceneManager.activeSceneChanged += OnActiveSceneChanged;
         }
 
         public T Acquire()
@@ -70,6 +71,13 @@ namespace ShotEmUp
             instance.gameObject.SetActive(false);
             return instance;
         }
+
+        private void Clear()
+        {
+            m_activedObjectList.Clear();
+            m_inactivedObjectList.Clear();
+            m_inactivedTimeDic.Clear();
+        }
         public void Release(T item)
         {
             item.gameObject.SetActive(false);
@@ -86,9 +94,11 @@ namespace ShotEmUp
             
         }
 
-        public void DestoryInactive()
+        public void DestoryInactive(T item)
         {
-
+            m_inactivedObjectList.Remove(item.gameObject);
+            m_inactivedTimeDic.Remove(item.gameObject);
+            GameObject.Destroy(item.gameObject);
         }
 
         public void OnUpdate()
@@ -99,10 +109,15 @@ namespace ShotEmUp
                 float timePassed = Time.time - m_inactivedTimeDic[currentNode.Value];
                 if (timePassed > m_MaxActiveTime)
                 {
-                    Release(currentNode.Value.GetComponent<T>());
+                    DestoryInactive(currentNode.Value.GetComponent<T>());
                 }
                 currentNode = currentNode.Next;
             }
+        }
+
+        void OnActiveSceneChanged(Scene preScene, Scene curScene)
+        {
+            Clear();
         }
     }
 
