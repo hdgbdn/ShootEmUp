@@ -9,7 +9,6 @@ using UnityEditor;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System;
-using Unity.VisualScripting;
 
 namespace ShotEmUp
 {
