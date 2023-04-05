@@ -13,26 +13,26 @@ namespace ShotEmUp
     public class UIPauseMenu : MonoBehaviour
     {
         [SerializeField]
-        private Button btn_Resume;
+        private Button m_btnResume;
         [SerializeField]
-        private Button btn_Restart;
+        private Button m_btnRestart;
         [SerializeField]
-        private Button btn_Exit;
+        private Button m_btnExit;
         void Start()
         {
-            btn_Resume.onClick.AddListener(() =>
+            m_btnResume.onClick.AddListener(() =>
             {
                 GameManager.GameState.ChangeState(GameStateManager.GameState.Battle);
                 GameManager.UI.DestroyUI("UIPauseMenu");
             });
 
-            btn_Restart.onClick.AddListener(() =>
+            m_btnRestart.onClick.AddListener(() =>
             {
                 GameManager.GameState.ChangeState(GameStateManager.GameState.MainMenu);
                 GameManager.UI.DestroyUI("UIPauseMenu");
             });
 
-            btn_Exit.onClick.AddListener(() =>
+            m_btnExit.onClick.AddListener(() =>
             {
                 GameManager.GameState.ChangeState(GameStateManager.GameState.Exit);
                 GameManager.UI.DestroyUI("UIPauseMenu");

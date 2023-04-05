@@ -13,11 +13,11 @@ namespace ShotEmUp
     public class UIMainMenu : MonoBehaviour
     {
         [SerializeField]
-        private Button btn_StartGame;
+        private Button m_btnStart;
 
         private void Start()
         {
-            btn_StartGame.onClick.AddListener(() =>
+            m_btnStart.onClick.AddListener(() =>
             {
                 GameManager.GameState.ChangeState(GameStateManager.GameState.Battle);
                 GameManager.UI.DestroyUI("UIMainMenu"); 
