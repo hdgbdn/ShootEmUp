@@ -33,7 +33,7 @@ namespace ShotEmUp
 
         private GameState m_curState;
 
-        private async void Start()
+        private void Start()
         {
             m_UIManager = GameManager.GetManager<UIManager>();
             m_enemyManager = GameManager.GetManager<EnemyManager>();
