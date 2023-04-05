@@ -3,11 +3,12 @@
 // Copyright © 2013-2021 Hu Di. All rights reserved.
 // E-mail: hdgbdn92@gmail.com
 //------------------------------------------------------------
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ShotEmUp
 {
@@ -24,10 +25,15 @@ namespace ShotEmUp
             DontDestroyOnLoad(gameObject);
         }
 
-        private void Start()
+        private async void Start()
         {
             DontDestroyOnLoad(gameObject);
             InitManagers();
+            GameState.OnGameStateChange += OnGameStateChange;
+            // Wait for one frame to let other manager finish their delegate attaching
+            // not elegant
+            await UniTask.DelayFrame(1);
+            GameState.ChangeState(GameStateManager.GameState.MainMenu);
         }
 
         public static void RegisterManager(Manager manager)
@@ -61,7 +67,7 @@ namespace ShotEmUp
 
             LinkedListNode<Manager> curNode = s_Managets.First;
 
-            while(curNode != null)
+            while (curNode != null)
             {
                 if (curNode.Value.GetType() == typ)
                 {
@@ -71,6 +77,11 @@ namespace ShotEmUp
             }
 
             return null;
+        }
+
+        public static EnemyManager Enemy
+        {
+            get; private set;
         }
 
         public static BulletManager Bullet
@@ -95,10 +106,45 @@ namespace ShotEmUp
 
         private static void InitManagers()
         {
+            Enemy = GetManager<EnemyManager>();
             Bullet = GetManager<BulletManager>();
             UI = GetManager<UIManager>();
             GameState = GetManager<GameStateManager>();
             Resource = GetManager<ResourceManager>();
+        }
+
+        public void OnGameStateChange(GameStateManager.GameState newState)
+        {
+            switch (newState)
+            {
+                case GameStateManager.GameState.Idle:
+                    break;
+                case GameStateManager.GameState.MainMenu:
+                    SceneManager.LoadScene("Menu");
+                    UI.CreateUI("UIMainMenu");
+                    break;
+                case GameStateManager.GameState.Battle:
+                    Time.timeScale = 1.0f;
+                    SceneManager.LoadScene("Main");
+                    Enemy.StartGenerateEnemy();
+                    break;
+                case GameStateManager.GameState.Pause:
+                    UI.CreateUI("UIPauseMenu");
+                    Time.timeScale = 0.0f;
+                    break;
+                case GameStateManager.GameState.Exit:
+                    Application.Quit();
+                    break;
+                default: break;
+            }
+        }
+
+        private void Update()
+        {
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                GameState.ChangeState(GameStateManager.GameState.Pause);
+            }
         }
     }
 }

@@ -30,11 +30,6 @@ namespace ShotEmUp
 
         private ResourceManager m_ResourceManager;
 
-        public bool ShouldGenerateEnemy
-        {
-            get { return m_shouldGenerate; }
-            set { m_shouldGenerate = value; }
-        }
 
         void Start()
         {
@@ -42,6 +37,16 @@ namespace ShotEmUp
             m_shouldGenerate = false;
 
             m_ResourceManager = GameManager.GetManager<ResourceManager>();
+        }
+
+        public void StartGenerateEnemy()
+        {
+            m_shouldGenerate = true;
+        }
+
+        public void StopGenerateEnemy()
+        {
+            m_shouldGenerate = false;
         }
 
         async void Update()
@@ -57,8 +62,7 @@ namespace ShotEmUp
                 return;
             }
             float randomPositionX = m_enemyGenerateBoundary.bounds.min.x + m_enemyGenerateBoundary.bounds.size.x * Random.value;
-            // TODO: use entity creation here
-            // now using AssetDatabase, it's an Editor only function!
+
             GameObject enemyPrefab = await m_ResourceManager.LoadPrefabAsync("EnemyShip");
             GameObject go = GameObject.Instantiate(enemyPrefab, transform);
             go.transform.position = new Vector3(randomPositionX, m_enemyGenerateBoundary.bounds.center.y, 0);

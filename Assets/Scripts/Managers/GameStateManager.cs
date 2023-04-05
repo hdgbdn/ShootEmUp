@@ -23,9 +23,12 @@ namespace ShotEmUp
         private EnemyManager m_enemyManager;
         public enum GameState
         {
+            Idle,
             MainMenu,
             Battle,
+            Pause,
             GameOver,
+            Exit,
         }
 
         private GameState m_curState;
@@ -36,40 +39,56 @@ namespace ShotEmUp
             m_enemyManager = GameManager.GetManager<EnemyManager>();
             m_curState = GameState.MainMenu;
             UIManager uiManager = GameManager.GetManager<UIManager>();
+            m_curState = GameState.Idle;
             if(uiManager == null) 
             {
                 Debug.LogError("UIManager is invalid");
                 return;
             }
             uiManager.OnUIClose += this.OnUIClose;
-            // Wait for one frame to let other manager finish their delegate attaching
-            // not elegant
-            await UniTask.DelayFrame(1);
-            ChangeState(GameState.MainMenu);
         }
 
         private void OnUIClose(string uiName)
         {
-            if (uiName == "UIMainMenu")
-            {
-                ChangeState(GameState.Battle);
-            }
+            
         }
 
-        private void ChangeState(GameState newState)
+        public void ChangeState(GameState newState)
         {
-            if (newState == GameState.MainMenu)
+            bool bStateChanged = false;
+            if(newState == GameState.Exit)
             {
-                m_curState = GameState.MainMenu;
-                m_UIManager.CreateUI("UIMainMenu");
-
+                bStateChanged = true;
             }
-            if (m_curState == GameState.MainMenu && newState == GameState.Battle)
+            else if (m_curState == GameState.Idle && newState == GameState.MainMenu)
             {
-                SceneManager.LoadScene("Main");
-                m_enemyManager.ShouldGenerateEnemy = true;
+                m_curState = newState;
+                bStateChanged = true;
             }
-            OnGameStateChange(newState);
+            else if (m_curState == GameState.MainMenu && newState == GameState.Battle)
+            {
+                m_curState = newState;
+                bStateChanged = true;
+            }
+            else if(m_curState == GameState.Battle && newState == GameState.Pause)
+            {
+                m_curState = newState;
+                bStateChanged = true;
+            }
+            else if (m_curState == GameState.Pause && newState == GameState.Battle)
+            {
+                m_curState = newState;
+                bStateChanged = true;
+            }
+            else if (m_curState == GameState.Pause && newState == GameState.MainMenu)
+            {
+                m_curState = newState;
+                bStateChanged = true;
+            }
+            if (bStateChanged)
+            {
+                OnGameStateChange(newState);
+            }
         }
 
         private void Update()
