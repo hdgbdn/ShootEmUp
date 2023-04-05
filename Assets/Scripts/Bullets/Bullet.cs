@@ -28,17 +28,19 @@ namespace ShotEmUp
             transform.position = m_startPosition;
         }
 
-        protected virtual void Update()
-        {
-
-        }
-
         protected virtual void OnTriggerEnter(Collider other)
         {
-
+            if(m_Launcher.Tag == "Player" && other.tag == "EnemyAircraft")
+            {
+                HideSelf();
+            }
+            else if(m_Launcher.Tag == "EnemyAircraft" && other.tag == "Player")
+            {
+                HideSelf();
+            }
         }
 
-        protected virtual void HideSelf()
+        public void HideSelf()
         {
             m_Launcher.HideBullet(this);
         }

@@ -59,6 +59,14 @@ namespace ShotEmUp
             }
             
         }
+        
+        public void HideEnemy(EnemyAircraft enemy)
+        {
+            if(m_enemyPool != null)
+            {
+                m_enemyPool.Release(enemy);
+            }
+        }
 
         async void Update()
         {
@@ -90,6 +98,8 @@ namespace ShotEmUp
             enemy.Init(100, 100, 5.0f);
             enemy.SetTargetPosition(endPos);
             m_lastGenerateTime = curTime;
+
+            m_enemyPool.OnUpdate();
         }
     }
 }

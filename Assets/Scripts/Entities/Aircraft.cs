@@ -45,11 +45,6 @@ namespace ShotEmUp
                 m_launchers[i].TryFire();
             }
         }
-
-        protected virtual void Update()
-        {
-            
-        }
     }
 }
 

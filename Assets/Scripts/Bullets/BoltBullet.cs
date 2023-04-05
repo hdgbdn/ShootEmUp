@@ -41,9 +41,8 @@ namespace ShotEmUp
             }
         }
 
-        protected override void Update()
+        protected void Update()
         {
-            base.Update();
             Vector3 direction = (m_endPosition - m_startPosition).normalized;
             Vector3 targetPosition = transform.position + direction * m_speed * Time.deltaTime;
             transform.position = targetPosition;

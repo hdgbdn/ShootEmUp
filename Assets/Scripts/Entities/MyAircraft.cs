@@ -12,6 +12,7 @@ namespace ShotEmUp
     public class MyAircraft : Aircraft
     {
         GameStateManager m_StateManager;
+        PlayerManager m_playerManager;
         protected override void Start()
         {
             base.Start();
@@ -24,13 +25,8 @@ namespace ShotEmUp
         {
             base.Init(maxHp, curHp, speed);
         }
-        protected override void Update()
+        protected void Update()
         {
-            base.Update();
-            // Make the position where mouse clicked the new target position
-            // And fire weapons
-          
-
             Vector3 direction = m_TargetPosition - transform.position;
             if (direction.sqrMagnitude <= Vector3.kEpsilon)
             {
@@ -48,14 +44,14 @@ namespace ShotEmUp
 
         protected void OnTriggerEnter(Collider other)
         {
-            //if (other.tag == "Enemy" || other.tag == "EnemyBullet")
-            //{
-            //    m_curHP -= 20;
-            //}
-            //if(m_curHP <= 0) 
-            //{
-            //    m_StateManager.ChangeState(GameStateManager.GameState.GameOver);
-            //}
+            if (other.tag == "EnemyAircraft" || other.tag == "EnemyBullet")
+            {
+                m_curHP -= 20;
+            }
+            if (m_curHP <= 0)
+            {
+                m_StateManager.ChangeState(GameStateManager.GameState.GameOver);
+            }
         }
     }
 }

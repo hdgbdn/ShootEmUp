@@ -22,6 +22,10 @@ namespace ShotEmUp
         protected Vector3 m_rightDirection;
         protected float m_lastfireTime;
         protected BulletManager m_bulletManager;
+        protected string m_tag;
+
+        public string Tag
+        { get { return m_tag; } }
 
         public BulletLauncher(Aircraft craft)
         {
@@ -30,6 +34,7 @@ namespace ShotEmUp
             m_rightDirection = craft.transform.right;
             m_lastfireTime = 0.0f;
             m_bulletManager = GameManager.GetManager<BulletManager>();
+            m_tag = craft.tag;
         }
         public virtual void TryFire()
         {
