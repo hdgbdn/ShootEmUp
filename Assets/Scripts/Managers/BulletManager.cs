@@ -65,9 +65,9 @@ namespace ShotEmUp
         /// </summary>
         private void Update()
         {
-            foreach(var pool in m_bulletPools)
+            foreach(var poolNode in m_bulletPools)
             {
-                pool.Value.OnUpdate();
+                poolNode.Value.OnUpdate();
             }
         }
 
