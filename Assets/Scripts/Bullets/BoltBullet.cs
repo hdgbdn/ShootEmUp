@@ -45,7 +45,7 @@ namespace ShotEmUp
         {
             base.Update();
             Vector3 direction = (m_endPosition - m_startPosition).normalized;
-            Vector3 targetPosition = transform.position + direction * m_speed;
+            Vector3 targetPosition = transform.position + direction * m_speed * Time.deltaTime;
             transform.position = targetPosition;
             if ((targetPosition - m_startPosition).magnitude > m_length)
             {

@@ -138,12 +138,14 @@ namespace ShotEmUp
             Time.timeScale = 1.0f;
             SceneManager.LoadScene("Main");
             Enemy.StartGenerateEnemy();
+            Player.SwapPlayer();
         }
 
         public static void Restart()
         {
             Time.timeScale = 1.0f;
             Enemy.StopGenerateEnemy();
+            Player.ClearPlayer();
             SceneManager.LoadScene("Menu");
             UI.CreateUI("UIMainMenu");
         }
