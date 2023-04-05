@@ -15,7 +15,7 @@ namespace ShotEmUp
     public class GameStateManager : Manager
     {
 
-        public delegate void OnGameStateChangeDelegate(GameState newState);
+        public delegate void OnGameStateChangeDelegate(GameState preState, GameState newState);
 
         public event OnGameStateChangeDelegate OnGameStateChange;
 
@@ -53,47 +53,67 @@ namespace ShotEmUp
             
         }
 
+        /// <summary>
+        /// A simple state machine that 
+        /// </summary>
+        /// <param name="newState"></param>
         public void ChangeState(GameState newState)
         {
             bool bStateChanged = false;
+            GameState preState = m_curState;
             if(newState == GameState.Exit)
             {
+                GameManager.ExitGame();
                 bStateChanged = true;
             }
             else if (m_curState == GameState.Idle && newState == GameState.MainMenu)
             {
+                GameManager.EnterMenuScene();
                 m_curState = newState;
                 bStateChanged = true;
             }
             else if (m_curState == GameState.MainMenu && newState == GameState.Battle)
             {
+                GameManager.StartNewGame();
                 m_curState = newState;
                 bStateChanged = true;
             }
             else if(m_curState == GameState.Battle && newState == GameState.Pause)
             {
+                GameManager.PauseGame();
                 m_curState = newState;
                 bStateChanged = true;
             }
             else if (m_curState == GameState.Pause && newState == GameState.Battle)
             {
+                GameManager.ResumeGame();
                 m_curState = newState;
                 bStateChanged = true;
             }
             else if (m_curState == GameState.Pause && newState == GameState.MainMenu)
             {
+                GameManager.Restart();
+                m_curState = newState;
+                bStateChanged = true;
+            }
+            else if (m_curState == GameState.Battle && newState == GameState.GameOver)
+            {
+                GameManager.GameOver();
                 m_curState = newState;
                 bStateChanged = true;
             }
             if (bStateChanged)
             {
-                OnGameStateChange(newState);
+                OnGameStateChange(preState, newState);
             }
         }
 
         private void Update()
         {
-
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ChangeState(GameState.Pause);
+            }
         }
     }
 }

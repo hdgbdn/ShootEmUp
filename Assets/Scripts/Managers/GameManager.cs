@@ -79,6 +79,11 @@ namespace ShotEmUp
             return null;
         }
 
+        public static PlayerManager Player
+        {
+            get; private set;
+        }
+
         public static EnemyManager Enemy
         {
             get; private set;
@@ -106,6 +111,7 @@ namespace ShotEmUp
 
         private static void InitManagers()
         {
+            Player = GetManager<PlayerManager>();
             Enemy = GetManager<EnemyManager>();
             Bullet = GetManager<BulletManager>();
             UI = GetManager<UIManager>();
@@ -113,35 +119,61 @@ namespace ShotEmUp
             Resource = GetManager<ResourceManager>();
         }
 
-        public void OnGameStateChange(GameStateManager.GameState newState)
+        public void OnGameStateChange(GameStateManager.GameState preState, GameStateManager.GameState newState)
         {
             switch (newState)
             {
-                case GameStateManager.GameState.Idle:
-                    break;
-                case GameStateManager.GameState.MainMenu:
-                    SceneManager.LoadScene("Menu");
-                    UI.CreateUI("UIMainMenu");
-                    break;
-                case GameStateManager.GameState.Battle:
-                    Time.timeScale = 1.0f;
-                    SceneManager.LoadScene("Main");
-                    Enemy.StartGenerateEnemy();
-                    break;
-                case GameStateManager.GameState.Pause:
-                    UI.CreateUI("UIPauseMenu");
-                    Time.timeScale = 0.0f;
-                    break;
-                case GameStateManager.GameState.Exit:
-                    Application.Quit();
-                    break;
-                default: break;
+                
             }
+        }
+
+        public static void EnterMenuScene()
+        {
+            SceneManager.LoadScene("Menu");
+            UI.CreateUI("UIMainMenu");
+        }
+
+        public static void StartNewGame()
+        {
+            Time.timeScale = 1.0f;
+            SceneManager.LoadScene("Main");
+            Enemy.StartGenerateEnemy();
+        }
+
+        public static void Restart()
+        {
+            Time.timeScale = 1.0f;
+            Enemy.StopGenerateEnemy();
+            SceneManager.LoadScene("Menu");
+            UI.CreateUI("UIMainMenu");
+        }
+
+        public static void PauseGame()
+        {
+            UI.CreateUI("UIPauseMenu");
+            Time.timeScale = 0.0f;
+        }
+
+        public static void ResumeGame()
+        {
+            Time.timeScale = 1.0f;
+            Enemy.StartGenerateEnemy();
+        }
+
+        public static void GameOver()
+        {
+            UI.CreateUI("UIGameOverMenu");
+            Time.timeScale = 0.0f;
+        }
+
+        public static void ExitGame() 
+        {
+            Application.Quit();
         }
 
         private void Update()
         {
-            if(Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
                 GameState.ChangeState(GameStateManager.GameState.Pause);
             }

@@ -62,7 +62,7 @@ namespace ShotEmUp
             return;
         }
 
-        private void OnGameStateChange(GameStateManager.GameState newState)
+        private void OnGameStateChange(GameStateManager.GameState preState, GameStateManager.GameState newState)
         {
           
         }
