@@ -41,7 +41,6 @@ namespace ShotEmUp
                 m_inactivedObjectList.AddLast(instance);
                 m_inactivedTimeDic.Add(instance, Time.time);
             }
-            SceneManager.activeSceneChanged += OnActiveSceneChanged;
         }
 
         public T Acquire()
@@ -72,8 +71,16 @@ namespace ShotEmUp
             return instance;
         }
 
-        private void Clear()
+        public void Clear()
         {
+            foreach(var obj in m_activedObjectList) 
+            {
+                GameManager.Destroy(obj);
+            }
+            foreach (var obj in m_inactivedObjectList)
+            {
+                GameManager.Destroy(obj);
+            }
             m_activedObjectList.Clear();
             m_inactivedObjectList.Clear();
             m_inactivedTimeDic.Clear();
@@ -115,10 +122,6 @@ namespace ShotEmUp
             }
         }
 
-        void OnActiveSceneChanged(Scene preScene, Scene curScene)
-        {
-            Clear();
-        }
     }
 
 }
