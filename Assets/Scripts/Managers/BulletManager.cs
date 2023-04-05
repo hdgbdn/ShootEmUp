@@ -71,6 +71,11 @@ namespace ShotEmUp
             }
         }
 
+        public void ClearAllBullets()
+        {
+            m_bulletPools.Clear();
+        }
+
         public void OnHideBullet(Bullet bullet)
         {
             var pool = InternalGetPoolByBulletType(bullet.GetType());

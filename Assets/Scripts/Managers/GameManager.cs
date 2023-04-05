@@ -25,14 +25,11 @@ namespace ShotEmUp
             DontDestroyOnLoad(gameObject);
         }
 
-        private async void Start()
+        private void Start()
         {
             DontDestroyOnLoad(gameObject);
             InitManagers();
             GameState.OnGameStateChange += OnGameStateChange;
-            // Wait for one frame to let other manager finish their delegate attaching
-            // not elegant
-            await UniTask.DelayFrame(1);
             GameState.ChangeState(GameStateManager.GameState.MainMenu);
         }
 
@@ -145,7 +142,9 @@ namespace ShotEmUp
         {
             Time.timeScale = 1.0f;
             Enemy.StopGenerateEnemy();
+            Enemy.ClearAllEnemies();
             Player.ClearPlayer();
+            Bullet.ClearAllBullets();
             SceneManager.LoadScene("Menu");
             UI.CreateUI("UIMainMenu");
         }

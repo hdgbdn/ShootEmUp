@@ -8,6 +8,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using System;
+using Cysharp.Threading.Tasks;
 
 namespace ShotEmUp
 {
@@ -28,9 +30,9 @@ namespace ShotEmUp
         private float m_lastGenerateTime;
         private bool m_shouldGenerate;
 
+        ObjectPool<EnemyAircraft> m_enemyPool;
+
         private ResourceManager m_ResourceManager;
-
-
         void Start()
         {
             m_lastGenerateTime = Time.time;
@@ -49,6 +51,15 @@ namespace ShotEmUp
             m_shouldGenerate = false;
         }
 
+        public void ClearAllEnemies()
+        {
+            if(m_enemyPool != null)
+            {
+                m_enemyPool.Clear();
+            }
+            
+        }
+
         async void Update()
         {
             if (!m_shouldGenerate) 
@@ -61,15 +72,23 @@ namespace ShotEmUp
             {
                 return;
             }
-            float randomPositionX = m_enemyGenerateBoundary.bounds.min.x + m_enemyGenerateBoundary.bounds.size.x * Random.value;
+            float randomPositionX = m_enemyGenerateBoundary.bounds.min.x + m_enemyGenerateBoundary.bounds.size.x * UnityEngine.Random.value;
 
-            GameObject enemyPrefab = await m_ResourceManager.LoadPrefabAsync("EnemyShip");
-            GameObject go = GameObject.Instantiate(enemyPrefab, transform);
-            go.transform.position = new Vector3(randomPositionX, m_enemyGenerateBoundary.bounds.center.y, 0);
-            go.transform.rotation = Quaternion.Euler(0, 0, 180);
-            EnemyAircraft enemy = go.GetComponent<EnemyAircraft>();
+            // Using lazy initialization in update.
+            // If asynchronous resource loading operations are performed in the Start function,
+            // it is possible that the Update function may be called before Start is finished.
+            if (m_enemyPool == null)
+            {
+                GameObject enemyPrefab = await m_ResourceManager.LoadPrefabAsync("EnemyShip");
+                m_enemyPool = new ObjectPool<EnemyAircraft>(enemyPrefab);
+            }
+            EnemyAircraft enemy = m_enemyPool.Acquire();
+            Vector3 startPos = new Vector3(randomPositionX, m_enemyGenerateBoundary.bounds.center.y, 0);
+            Vector3 endPos = startPos + new Vector3(0, -200, 0);
+            enemy.transform.position = startPos;
+            enemy.transform.rotation = Quaternion.Euler(0, 0, 180);
             enemy.Init(100, 100, 5.0f);
-
+            enemy.SetTargetPosition(endPos);
             m_lastGenerateTime = curTime;
         }
     }
