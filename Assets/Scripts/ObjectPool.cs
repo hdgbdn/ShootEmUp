@@ -21,9 +21,9 @@ namespace ShotEmUp
         LinkedList<GameObject> m_inactivedObjectList;
 
         int m_initialSize = 10;
-        float m_MaxActiveTime;
+        float m_maxLifeTime;
 
-        public ObjectPool(GameObject prefab, float maxAcitveTime = 5.0f)
+        public ObjectPool(GameObject prefab, float maxLifeTime = 5.0f)
         {
             if(prefab.GetComponent<MonoBehaviour>() == null)
             {
@@ -31,7 +31,7 @@ namespace ShotEmUp
                 return;
             }    
             m_prefab = prefab;
-            m_MaxActiveTime = maxAcitveTime;
+            m_maxLifeTime = maxLifeTime;
             m_activedObjectList = new LinkedList<GameObject>();
             m_inactivedObjectList = new LinkedList<GameObject>();
             m_inactivedTimeDic = new Dictionary<GameObject, float>();
@@ -125,7 +125,7 @@ namespace ShotEmUp
             while(currentNode != null)
             {
                 float timePassed = Time.time - m_inactivedTimeDic[currentNode.Value];
-                if (timePassed > m_MaxActiveTime)
+                if (timePassed > m_maxLifeTime)
                 {
                     DestoryInactive(currentNode.Value.GetComponent<T>());
                 }
