@@ -75,11 +75,18 @@ namespace ShotEmUp
         {
             foreach(var obj in m_activedObjectList) 
             {
-                GameManager.Destroy(obj);
+                if(obj != null)
+                {
+                    GameObject.Destroy(obj);
+                }
+                
             }
             foreach (var obj in m_inactivedObjectList)
             {
-                GameManager.Destroy(obj);
+                if (obj != null)
+                {
+                    GameObject.Destroy(obj);
+                }
             }
             m_activedObjectList.Clear();
             m_inactivedObjectList.Clear();
@@ -105,7 +112,11 @@ namespace ShotEmUp
         {
             m_inactivedObjectList.Remove(item.gameObject);
             m_inactivedTimeDic.Remove(item.gameObject);
-            GameObject.Destroy(item.gameObject);
+            if(item.gameObject != null)
+            {
+                GameObject.Destroy(item.gameObject);
+            }
+            
         }
 
         public void OnUpdate()
