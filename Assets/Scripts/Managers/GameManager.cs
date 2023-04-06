@@ -134,8 +134,10 @@ namespace ShotEmUp
         {
             Time.timeScale = 1.0f;
             SceneManager.LoadScene("Main");
+            UI.CreateUI("UIHealthBar");
             Enemy.StartGenerateEnemy();
-            Player.SwapPlayer();
+            Player.ResetData();
+            Player.SpawnPlayer();
         }
 
         public static void Restart()

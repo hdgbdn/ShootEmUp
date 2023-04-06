@@ -17,6 +17,19 @@ namespace ShotEmUp
         protected Vector3 m_TargetPosition;
         protected List<BulletLauncher> m_launchers;
 
+
+        public delegate void AircraftHealthChangeDelegate(float maxHp, float curHp);
+
+        public float CurHP
+        {
+            get { return m_curHP; }
+        }
+
+        public float MaxHP
+        {
+            get { return m_maxHP; }
+        }
+
         public virtual void Init(float maxHp, float curHp, float speed = 12.0f)
         {
             m_maxHP = maxHp;

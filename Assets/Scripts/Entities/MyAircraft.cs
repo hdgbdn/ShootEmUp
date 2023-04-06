@@ -11,14 +11,12 @@ namespace ShotEmUp
 {
     public class MyAircraft : Aircraft
     {
-        GameStateManager m_StateManager;
-        PlayerManager m_playerManager;
+        public event AircraftHealthChangeDelegate OnHealthChange;
         protected override void Start()
         {
             base.Start();
             m_launchers.Add(new LinearBulletLauncher(this));
 
-            m_StateManager = GameManager.GetManager<GameStateManager>();
         }
 
         public override void Init(float maxHp, float curHp, float speed = 12.0f)
@@ -47,10 +45,11 @@ namespace ShotEmUp
             if (other.tag == "EnemyAircraft" || other.tag == "EnemyBullet")
             {
                 m_curHP -= 20;
+                OnHealthChange(m_maxHP, m_curHP);
             }
             if (m_curHP <= 0)
             {
-                m_StateManager.ChangeState(GameStateManager.GameState.GameOver);
+                m_curHP = 0;
             }
         }
     }

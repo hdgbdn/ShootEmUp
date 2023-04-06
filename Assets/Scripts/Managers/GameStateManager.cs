@@ -102,6 +102,12 @@ namespace ShotEmUp
                 m_curState = newState;
                 bStateChanged = true;
             }
+            else if (m_curState == GameState.GameOver && newState == GameState.MainMenu)
+            {
+                GameManager.Restart();
+                m_curState = newState;
+                bStateChanged = true;
+            }
             if (bStateChanged)
             {
                 OnGameStateChange(preState, newState);

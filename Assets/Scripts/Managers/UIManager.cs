@@ -64,7 +64,10 @@ namespace ShotEmUp
 
         private void OnGameStateChange(GameStateManager.GameState preState, GameStateManager.GameState newState)
         {
-          
+          if(newState == GameStateManager.GameState.MainMenu || newState == GameStateManager.GameState.Idle) 
+            {
+                DestroyUI("UIHealthBar");
+            }
         }
     }
 
