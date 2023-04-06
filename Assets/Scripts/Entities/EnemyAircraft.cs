@@ -28,10 +28,11 @@ namespace ShotEmUp
             if (other.tag == "PlayerBullet")
             {
                 m_curHP -= 40;
-            }
-            if(m_curHP <= 0) 
-            { 
-                HideSelf();
+                if(m_curHP <= 0) 
+                {
+                    m_curHP = 0;
+                }
+                m_enmyManager.OnEnemyHealthChange(this, m_curHP);
             }
         }
 

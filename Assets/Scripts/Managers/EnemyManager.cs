@@ -68,6 +68,16 @@ namespace ShotEmUp
             }
         }
 
+        public void OnEnemyHealthChange(EnemyAircraft enemy, float cur_Hp)
+        {
+            if(enemy != null)
+            {
+                if (cur_Hp <= 0)
+                {
+                    HideEnemy(enemy);
+                }
+            }
+        }
         async void Update()
         {
             if (!m_shouldGenerate) 
