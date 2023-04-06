@@ -11,6 +11,9 @@ using UnityEngine;
 
 namespace ShotEmUp
 {
+    /// <summary>
+    /// A simple UI manager for creating and destroying UI elements.
+    /// </summary>
     public class UIManager : Manager
     {
         private Transform m_uiRoot;

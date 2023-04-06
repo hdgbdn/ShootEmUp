@@ -10,6 +10,9 @@ using UnityEngine;
 
 namespace ShotEmUp
 {
+    /// <summary>
+    /// The base of all Managers.
+    /// </summary>
     public class Manager : MonoBehaviour
     {
         protected void Awake()

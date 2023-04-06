@@ -14,7 +14,6 @@ namespace ShotEmUp
 {
     /// <summary>
     /// A manager arrange all the bullets, include player's and enemy's bullets.
-    /// Managing their lifecycles.
     /// Using objectpool to reduce the GC of Bullet GameObjects.
     /// </summary>
     public class BulletManager : Manager
@@ -60,7 +59,7 @@ namespace ShotEmUp
         }
 
         /// <summary>
-        /// Check object pool to release object by timel
+        /// Check object pool to release object by time passed.
         /// </summary>
         private void Update()
         {

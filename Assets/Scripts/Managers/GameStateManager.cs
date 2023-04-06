@@ -54,9 +54,9 @@ namespace ShotEmUp
         }
 
         /// <summary>
-        /// A simple state machine that 
+        /// A simple state machine that triggers different game actions based on the provided new game state.
         /// </summary>
-        /// <param name="newState"></param>
+        /// <param name="newState">The new state.</param>
         public void ChangeState(GameState newState)
         {
             bool bStateChanged = false;

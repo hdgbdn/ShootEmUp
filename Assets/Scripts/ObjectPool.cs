@@ -23,6 +23,11 @@ namespace ShotEmUp
         int m_initialSize = 10;
         float m_maxLifeTime;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="prefab">The prefab of the object your want to pool.</param>
+        /// <param name="maxLifeTime">The max life time to stay in inactived.</param>
         public ObjectPool(GameObject prefab, float maxLifeTime = 5.0f)
         {
             if(prefab.GetComponent<MonoBehaviour>() == null)
@@ -43,6 +48,10 @@ namespace ShotEmUp
             }
         }
 
+        /// <summary>
+        /// Acquire a instance.
+        /// </summary>
+        /// <returns></returns>
         public T Acquire()
         {
             LinkedListNode<GameObject> currentNode = m_inactivedObjectList.First;
@@ -71,6 +80,9 @@ namespace ShotEmUp
             return instance;
         }
 
+        /// <summary>
+        /// Clear all the instance in the pool.
+        /// </summary>
         public void Clear()
         {
             foreach(var obj in m_activedObjectList) 
@@ -92,6 +104,11 @@ namespace ShotEmUp
             m_inactivedObjectList.Clear();
             m_inactivedTimeDic.Clear();
         }
+
+        /// <summary>
+        /// Release a certain item from pool.
+        /// </summary>
+        /// <param name="item"></param>
         public void Release(T item)
         {
             item.gameObject.SetActive(false);
@@ -108,7 +125,7 @@ namespace ShotEmUp
             
         }
 
-        public void DestoryInactive(T item)
+        private void DestoryInactive(T item)
         {
             m_inactivedObjectList.Remove(item.gameObject);
             m_inactivedTimeDic.Remove(item.gameObject);

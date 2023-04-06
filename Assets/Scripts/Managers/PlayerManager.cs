@@ -9,6 +9,9 @@ using UnityEngine;
 
 namespace ShotEmUp
 {
+    /// <summary>
+    /// Manage player aircraft's movement, HP, and lifes.
+    /// </summary>
     public class PlayerManager : Manager
     {
         private MyAircraft m_playerAirCraft;
@@ -93,7 +96,6 @@ namespace ShotEmUp
             m_playerCurLifes = 3;
         }
 
-        // Update is called once per frame
         void Update()
         {
             if(m_playerAirCraft == null) 

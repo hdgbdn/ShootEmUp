@@ -7,8 +7,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ShotEmUp 
+namespace ShotEmUp
 {
+    /// <summary>
+    /// The base class of all aircrafts.
+    /// </summary>
     public class Aircraft : MonoBehaviour
     {
         protected float m_maxHP;

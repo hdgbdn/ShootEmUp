@@ -9,6 +9,9 @@ using UnityEngine;
 
 namespace ShotEmUp
 {
+    /// <summary>
+    /// Player's aircraft.
+    /// </summary>
     public class MyAircraft : Aircraft
     {
         public event AircraftHealthChangeDelegate OnHealthChange;
@@ -23,8 +26,10 @@ namespace ShotEmUp
         {
             base.Init(maxHp, curHp, speed);
         }
+
         protected void Update()
         {
+            // The m_TargetPosition is controlled by it's manager.
             Vector3 direction = m_TargetPosition - transform.position;
             if (direction.sqrMagnitude <= Vector3.kEpsilon)
             {

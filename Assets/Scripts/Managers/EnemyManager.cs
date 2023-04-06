@@ -13,6 +13,9 @@ using Cysharp.Threading.Tasks;
 
 namespace ShotEmUp
 {
+    /// <summary>
+    /// Manages all the enemy air crafts.
+    /// </summary>
     public class EnemyManager : Manager
     {
         [SerializeField]
@@ -57,25 +60,24 @@ namespace ShotEmUp
             {
                 m_enemyPool.Clear();
             }
-            
-        }
-        
-        public void HideEnemy(EnemyAircraft enemy)
-        {
-            if(m_enemyPool != null)
-            {
-                m_enemyPool.Release(enemy);
-            }
-        }
 
+        }
         public void OnEnemyHealthChange(EnemyAircraft enemy, float cur_Hp)
         {
-            if(enemy != null)
+            if (enemy != null)
             {
                 if (cur_Hp <= 0)
                 {
                     HideEnemy(enemy);
                 }
+            }
+        }
+
+        public void HideEnemy(EnemyAircraft enemy)
+        {
+            if(m_enemyPool != null)
+            {
+                m_enemyPool.Release(enemy);
             }
         }
         async void Update()

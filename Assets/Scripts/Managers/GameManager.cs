@@ -45,6 +45,8 @@ namespace ShotEmUp
 
             LinkedListNode<Manager> curNode = s_Managets.First;
 
+            // Iterate through the linked list to check for the existence of the specified manager type.
+            // Make it acts like singleton.
             while (curNode != null)
             {
                 if (curNode.Value.GetType() == type)
